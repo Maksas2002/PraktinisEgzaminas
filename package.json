@@ -1,0 +1,9 @@
+{
+  "name": "studentu-registras",
+  "private": true,
+  "scripts": {
+    "test": "npm --prefix back test && npm --prefix front run lint",
+    "build": "npm --prefix front run build"
+  }
+}
+
