@@ -2,6 +2,9 @@
 
 Pilno ciklo WEB aplikacija studentams ir jų mokomiesiems dalykams administruoti. Projektas sukurtas pagal kliento–serverio architektūrą:
 
+Išsamus kodo ir architektūros paaiškinimas projekto gynimui pateiktas faile
+[`PROJEKTO_PAAISKINIMAS.md`](PROJEKTO_PAAISKINIMAS.md).
+
 - **WEB sąsaja:** React + Vite;
 - **REST API:** JavaScript, Node.js ir Express;
 - **duomenų bazė:** PostgreSQL (valdoma ir per pgAdmin);
