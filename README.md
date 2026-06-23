@@ -43,7 +43,10 @@ Reikia turėti įdiegtus **Docker Desktop** ir **Docker Compose**.
    Copy-Item .env.example .env
    ```
 
-2. `.env` faile pakeiskite slaptažodžius.
+2. `.env` faile pakeiskite slaptažodžius. `DATABASE_URL` rašyti
+   nereikia – Docker Compose jį automatiškai sudaro iš `POSTGRES_USER`,
+   `POSTGRES_PASSWORD` ir `POSTGRES_DB`, todėl API ir PostgreSQL visada
+   naudoja tuos pačius prisijungimo duomenis.
 
 3. Paleiskite visą sistemą:
 
@@ -57,7 +60,40 @@ Reikia turėti įdiegtus **Docker Desktop** ir **Docker Compose**.
    - REST API sveikatos patikra: <http://localhost:5000/health>
    - pgAdmin: <http://localhost:5050>
 
-pgAdmin jungiantis prie duomenų bazės kaip serverio adresą naudokite `postgres`, prievadą `5432`, o prisijungimo duomenis imkite iš `.env`.
+pgAdmin registruojant serverį naudokite:
+
+- **Name**: `Studentų registras` (arba bet kokį kitą pavadinimą);
+- **Host name/address**: `postgres`;
+- **Port**: `5432`;
+- **Maintenance database**: `POSTGRES_DB` reikšmę iš `.env`;
+- **Username**: `POSTGRES_USER` reikšmę iš `.env`;
+- **Password**: `POSTGRES_PASSWORD` reikšmę iš `.env`.
+
+### pgAdmin klaida „password authentication failed“
+
+PostgreSQL vartotojas ir slaptažodis nustatomi tik pirmą kartą kuriant
+duomenų volume. Jei pakeitėte `.env` po pirmojo paleidimo, senas volume vis
+dar naudoja ankstesnius duomenis.
+
+Jei duomenų išsaugoti nereikia, atkurkite duomenų bazę:
+
+```bash
+docker compose down -v
+docker compose up --build
+```
+
+> `down -v` ištrina lokalius PostgreSQL ir pgAdmin duomenis.
+
+Jei `.env` naudojate:
+
+```env
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=postgres
+```
+
+pgAdmin lange įrašykite `postgres` į **Maintenance database**, **Username**
+ir **Password** laukus.
 
 Sustabdymas:
 
@@ -89,7 +125,8 @@ npm install
 npm run dev
 ```
 
-Prieš paleidžiant API būtina sukurti `.env`, nurodyti `DATABASE_URL` ir įvykdyti `back/src/db/init.sql`.
+Prieš paleidžiant API be Docker būtina nurodyti `DATABASE_URL` ir įvykdyti
+`back/src/db/init.sql`.
 
 ## REST API taškai
 
